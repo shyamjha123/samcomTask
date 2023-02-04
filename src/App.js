@@ -6,15 +6,33 @@ import "./App.css";
 function App(){
     const [search, setSearch] = useState("");
     const [crypto, setCrypto] = useState([]);
+    const api = 'https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=INR'
+    async function getData(){
+        let reponse = await fetch(api);
+        let crypto= await reponse.json();
+        setCrypto(crypto.coins);
+        console.log(crypto);
+    }
 
     useEffect(() =>{
-        Axios.get(
-            'https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=INR'
-
-        ).then((res) => {
-            setCrypto(res.data.coins);
-        });
+        getData()
     }, []);
+    function addfav(id){
+        var sdata = {};
+        var udata = crypto.filter((e)=>{
+            if(e.id===id){
+                sdata=e;
+            }
+            return (e.id!=id)
+            })
+            
+            
+        
+        udata.unshift(sdata)
+        setCrypto(udata)
+
+    }
+
     return (
         <>
         <div className="App">
@@ -59,6 +77,7 @@ function App(){
                                 <td>rs{val.price.toFixed(2)}</td>
                                 <td>{val.availableSupply}</td>
                                 <td>{val.volume.toFixed(0)}</td>
+                                <td><button onClick={()=>{addfav(val.id)}}>FAV</button></td>
                             </tr>
                             </>
                         );
