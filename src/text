@@ -1,0 +1,25 @@
+import { useEffect } from "react"
+
+const [user, setUser] = useState([])
+const A = async() => {
+    const reponse = await fetch("/")
+    setUser (await reponse.json())
+}
+useEffect(() => {
+    A();
+}, [])
+ return (
+    <>
+    {
+        user.map((B) =>{
+            return(
+                <>
+                <h1>{B.id}</h1>
+                </>
+            )
+
+            
+        })
+    }
+    </>
+ )
