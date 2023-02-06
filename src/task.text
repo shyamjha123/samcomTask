@@ -1,0 +1,10 @@
+Create a single-page React application that allows users to create and manage a list of to-do items, using a state management library like Redux or the Context API. The application should have the following features:
+A form that allows users to add new to-do items, including a task name, priority level, and due date.
+A list view that displays all of the to-do items, including the task name, priority level, and status (not started, in progress, or completed).
+The ability to edit and update existing to-do items.
+The ability to mark a to-do item as complete or incomplete.
+The ability to filter and search the to-do list by task name, priority level, or due date.
+The ability to delete to-do items.
+Use of state management library (like Redux or the Context API) to handle the state of the to-do items and manage the flow of data throughout the application.
+The application should use local storage to persist the to-do data across sessions.
+//https://docs.google.com/document/d/1U_KoWaftcRUkFtg5rRFxVZ4vmsJKM6xjsFE1ErYewuo/edit?usp=sharing
