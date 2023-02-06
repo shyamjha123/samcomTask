@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./Task.css"
+import './fas.css'
 
 function Todo({ todo, index, markTodo, removeTodo }){
     return (
@@ -57,9 +57,10 @@ function App(){
         setTodos(newTodods);
     };
     return(
-        <div className=""app>
+        <div className="app">
             <div className="container">
-                <h1 className="text-center mb-4">Todo List</h1>
+            
+                <h1 className="text-center mb-4" style={{color:"pink"}}>Todo List</h1>
                 <FormTodo addTodo={addTodo} />
                 <div>
                     {todos.map((todo, index) => (
@@ -73,6 +74,7 @@ function App(){
                 </div>
                 
             </div>
+            <Button  style={{ padding:"10px", position: "absolute",  left:"30px", borderRadius:"10px"}}>Search</Button>
         </div>
     );
 }
