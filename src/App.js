@@ -1,93 +1,79 @@
-import Axios from "axios"; 
-import { useEffect, useState } from "react";
+import React from "react";
+import { Button, Card, Form } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./Task.css"
 
-import "./App.css";
-
-function App(){
-    const [search, setSearch] = useState("");
-    const [crypto, setCrypto] = useState([]);
-    const api = 'https://api.coinstats.app/public/v1/coins?skip=0&limit=100&currency=INR'
-    async function getData(){
-        let reponse = await fetch(api);
-        let crypto= await reponse.json();
-        setCrypto(crypto.coins);
-        console.log(crypto);
-    }
-
-    useEffect(() =>{
-        getData()
-    }, []);
-    function addfav(id){
-        var sdata = {};
-        var udata = crypto.filter((e)=>{
-            if(e.id===id){
-                sdata=e;
-            }
-            return (e.id!=id)
-            })
-            
-            
-        
-        udata.unshift(sdata)
-        setCrypto(udata)
-
-    }
-
+function Todo({ todo, index, markTodo, removeTodo }){
     return (
-        <>
-        <div className="App">
-            <h1>AllCurrencies</h1>
-            <input type="text" placeholder="Search..." onChange={(e) => {
-                setSearch(e.target.value);
-                
-            }}/>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Rank</td>
-                        <td>Name</td>
-                        <td>Symbol</td>
-                        <td>Market</td>
-                        <td>Price</td>
-                        <td>Available Supply</td>
-                        <td>Volume</td>
-                    </tr>
-                </thead>
-                {/* Mape all crypto */}
-                <tbody>
-                    {/* Filter to check for the searched crypto*/ }
-                    {crypto
-                    .filter((val) => {
-                        return val.name.toLowerCase().includes(search.toLowerCase());
-                    })
-                    .map((val, id) => {
-                        return (
-                            <>
-                            <tr id={id}>
-                                <td className="rank">{val.rank}</td>
-                                
-                                <td className="logo">
-                                    <a href={val.websiteUrl}>
-                                        <img src={val.icon} alt="logo" width="30px" />
-                                    </a>
-                                    <p>{val.name}</p>
-                                </td>
-                                <td className="symbol">{val.symbol}</td>
-                                <td>rs{val.marketCap}</td>
-                                <td>rs{val.price.toFixed(2)}</td>
-                                <td>{val.availableSupply}</td>
-                                <td>{val.volume.toFixed(0)}</td>
-                                <td><button onClick={()=>{addfav(val.id)}}>FAV</button></td>
-                            </tr>
-                            </>
-                        );
-                    })}
-                </tbody>
-            </table>
+        <div className="todo">
+            <span style={{ textDecoration :  todo.isDone ? "line-through" : "" }}>{todo.text}</span>
+            <div>
+                <Button varient="outline-success" onClick={()=> markTodo(index)}>/</Button>{' '}
+                <Button varient="outline-danger" onClick={()=> removeTodo(index)}>x</Button>
+            </div>
         </div>
-        
-        </>
+    );
+}
+function FormTodo({ addTodo }){
+    const [value, setValue] = React.useState("");
+    const handleSubmit = e => {
+        e.preventDefault();
+        if(!value) return ;
+        addTodo(value);
+        setValue("");
+    };
+    return (
+        <Form onSubmit={handleSubmit}>
+            <Form.Group>
+                <Form.Label><b>Add Todo</b></Form.Label>
+                <Form.Control type="text" className="input"  value={value} onChange={e => setValue(e.target.value)} placeholder="Add new Todo" />
 
+            </Form.Group>
+            <Button varient="primary mb-3" type="submit">Submit</Button>
+
+        </Form>
+    );
+}
+function App(){
+    const [todos, setTodos] = React.useState([
+        {
+        text: "This is a sampe todo",
+        isDone: false
+        }
+    ]);
+    const addTodo = text =>{
+        const newTodos = [...todos, { text }];
+       // newTodos[index].isDone = true;
+        setTodos(newTodos);
+    };
+    const markTodo = index => {
+        const newTodods = [...todos];
+        newTodods[index].isDone = true;
+        setTodos(newTodods);
+    }
+    const removeTodo = index => {
+        const newTodods = [...todos];
+        newTodods.splice(index, 1);
+        setTodos(newTodods);
+    };
+    return(
+        <div className=""app>
+            <div className="container">
+                <h1 className="text-center mb-4">Todo List</h1>
+                <FormTodo addTodo={addTodo} />
+                <div>
+                    {todos.map((todo, index) => (
+                        <Card>
+                            <Card.Body>
+                                <Todo key={index} index={index} todo={todo} markTodo={markTodo} removeTodo={removeTodo} />
+
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </div>
+                
+            </div>
+        </div>
     );
 }
 export default App;
